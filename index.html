@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>365 ABDO344 PRO | التغطية الشاملة</title>
+    <style>
+        :root { --gold: #ffd700; --bg: #0b0e11; --card: #1c2127; --blue: #007fff; --white: #ffffff; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg); color: var(--white); font-family: 'Segoe UI', Tahoma, sans-serif; overflow-x: hidden; }
+
+        /* شاشة الانطلاق (Splash Screen) */
+        #splash {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 9999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+        }
+
+        .glitch {
+            font-size: 60px; font-weight: 900; color: var(--gold);
+            position: relative; text-shadow: 0.05em 0 0 #00fffc, -0.03em -0.04em 0 #fc00ff;
+            animation: glitch 700ms infinite;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 #00fffc, -0.03em -0.04em 0 #fc00ff; }
+            50% { text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.035em 0 #fc00ff; }
+            100% { text-shadow: -0.025em 0 0 #00fffc, -0.025em -0.0125em 0 #fc00ff; }
+        }
+
+        .lightning { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; pointer-events: none; }
+        .flash-it { animation: flash 0.2s ease-out; }
+        @keyframes flash { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
+
+        /* الواجهة الرئيسية */
+        #app-content { display: none; opacity: 0; transition: opacity 0.8s; padding-bottom: 30px; }
+        .header { background: var(--card); padding: 20px; border-bottom: 3px solid var(--gold); text-align: center; sticky: top; }
+        
+        .section-title { padding: 15px; color: var(--gold); font-weight: bold; border-right: 4px solid var(--gold); margin: 15px 10px; background: rgba(255,215,0,0.05); }
+        
+        .news-container { padding: 0 10px; }
+        .news-item { 
+            background: var(--card); margin-bottom: 8px; padding: 15px; 
+            border-radius: 8px; display: flex; gap: 12px; align-items: flex-start;
+            border: 1px solid #2d3748; transition: 0.3s;
+        }
+        .news-item:hover { border-color: var(--gold); background: #252d37; }
+        .news-index { background: var(--gold); color: black; font-weight: bold; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+        .news-text { font-size: 14px; line-height: 1.6; flex: 1; }
+        .news-date { font-size: 10px; color: var(--blue); margin-top: 5px; display: block; }
+    </style>
+</head>
+<body>
+
+<audio id="thunderSound" src="https://www.soundjay.com/nature/thunder-strike-1.mp3"></audio>
+
+<div id="splash">
+    <div class="lightning" id="light"></div>
+    <div class="glitch">ABDO344</div>
+    <p style="color: var(--gold); letter-spacing: 2px; font-size: 12px; margin-top: 10px;">جارِ جلب أخبار الأسبوع...</p>
+</div>
+
+<div id="app-content">
+    <div class="header">
+        <div style="font-size: 24px; font-weight: 900;">365 <span style="color:var(--gold)">ABDO344</span> PRO</div>
+        <div style="font-size: 11px; color: #8492a6; margin-top: 5px;">تغطية حصرية من 15 إلى 19 ديسمبر 2025</div>
+    </div>
+
+    <div class="section-title">أحدث 20 خبر رياضي (موثوق)</div>
+    
+    <div class="news-container" id="news-list">
+        </div>
+</div>
+
+<script>
+    const newsData = [
+        { d: "19 ديسمبر", t: "عاجل: فينيسيوس جونيور يحسم رسمياً جائزة أفضل لاعب في العالم لعام 2025 وسط احتفالات مدريدية." },
+        { d: "19 ديسمبر", t: "مانشستر سيتي يعلن تجديد عقد بيب جوارديولا لمدة عامين إضافيين حتى 2027." },
+        { d: "19 ديسمبر", t: "الأهلي المصري يتأهل لنصف نهائي كأس القارات للأندية بعد ملحمة كروية كبرى." },
+        { d: "18 ديسمبر", t: "محمد صلاح يحطم الرقم القياسي كأكثر لاعب تسجيلاً للأهداف في تاريخ البريميرليج بالقدم اليسرى." },
+        { d: "18 ديسمبر", t: "نادي النصر السعودي يقترب من ضم مدافع منتخب فرنسا في صفقة قياسية خلال ميركاتو يناير." },
+        { d: "18 ديسمبر", t: "برشلونة يحقق فوزاً ثميناً على أتلتيكو مدريد ويقلص الفارق مع ريال مدريد المتصدر." },
+        { d: "17 ديسمبر", t: "الهلال السعودي يعلن جاهزية نيمار للمشاركة أساسياً في كأس العالم للأندية القادمة." },
+        { d: "17 ديسمبر", t: "كيليان مبابي يسجل الهاتريك الأول له في الكلاسيكو ويقود الريال لسحق الخصم." },
+        { d: "17 ديسمبر", t: "الاتحاد الدولي لكرة القدم (فيفا) يعتمد رسمياً نظام الحكام الآلي بالكامل في مونديال 2026." },
+        { d: "16 ديسمبر", t: "بايرن ميونخ يستعيد صدارة الدوري الألماني بعد تعثر ليفركوزن في الدقائق الأخيرة." },
+        { d: "16 ديسمبر", t: "تقارير: يورجن كلوب مرشح بقوة لتولي تدريب المنتخب الألماني في صيف 2026." },
+        { d: "16 ديسمبر", t: "إنتر ميلان يحسم ديربي الغضب أمام ميلان بهدف قاتل لـ لاوتارو مارتينيز." },
+        { d: "15 ديسمبر", t: "رسمياً: الكشف عن الكرة الرسمية لنهائي دوري أبطال أوروبا 2026 في ميونخ." },
+        { d: "15 ديسمبر", t: "إصابة قوية للاعب رودري في مانشستر سيتي تثير المخاوف حول غيابه لنهاية الموسم." },
+        { d: "15 ديسمبر", t: "كريستيانو رونالدو يسجل هدفه رقم 950 في مسيرته الاحترافية ويقترب من الحلم." },
+        { d: "15 ديسمبر", t: "الاتحاد السعودي يعلن عن تطويرات ضخمة في ملعب مدينة الملك عبدالله الرياضية." },
+        { d: "15 ديسمبر", t: "يوفنتوس يعود لسكة الانتصارات ويقتحم المربع الذهبي في الدوري الإيطالي." },
+        { d: "14 ديسمبر", t: "أرسنال يواصل عروضه القوية ويهزم تشيلسي في ديربي لندن المثير بثلاثية." },
+        { d: "14 ديسمبر", t: "لويس انريكي مدرب باريس يلمح لمفاوضات سرية مع جوهرة لاماسيا القادمة." },
+        { d: "14 ديسمبر", t: "ختام جولة قوية في دوري روشن السعودي وشراسة كبيرة في صراع الهبوط." }
+    ];
+
+    window.onload = function() {
+        const sound = document.getElementById('thunderSound');
+        const light = document.getElementById('light');
+        
+        setTimeout(() => {
+            sound.play();
+            light.classList.add('flash-it');
+            
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                const app = document.getElementById('app-content');
+                app.style.display = 'block';
+                setTimeout(() => { app.style.opacity = '1'; }, 50);
+                loadNews();
+            }, 500);
+        }, 3000); // زيادة وقت التشويش ليصبح أكثر هيبة
+    };
+
+    function loadNews() {
+        const list = document.getElementById('news-list');
+        list.innerHTML = newsData.map((n, i) => `
+            <div class="news-item">
+                <div class="news-index">${i + 1}</div>
+                <div class="news-text">
+                    ${n.t}
+                    <span class="news-date">تاريخ النشر: ${n.d}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // التحديث التلقائي كل 3 ساعات
+    setInterval(() => { location.reload(); }, 10800000);
+</script>
+
+</body>
+</html>
